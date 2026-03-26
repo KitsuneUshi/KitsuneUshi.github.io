@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>學習歷程 | Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:        #080e1a;
+      --bg2:       #0d1625;
+      --panel:     #111d30;
+      --border:    #1e3050;
+      --accent1:   #38bdf8; /* sky blue */
+      --accent2:   #818cf8; /* indigo */
+      --accent3:   #34d399; /* emerald */
+      --text:      #e2eaf8;
+      --muted:     #64748b;
+      --mono:      'Space Mono', monospace;
+      --sans:      'Noto Sans TC', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ── GRID OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(56,189,248,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(56,189,248,.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2.5rem;
+      background: rgba(8,14,26,.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: var(--mono);
+      font-size: .85rem;
+      color: var(--accent1);
+      letter-spacing: .1em;
+    }
+    .nav-logo span { color: var(--accent2); }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+    }
+    nav a {
+      font-family: var(--mono);
+      font-size: .75rem;
+      letter-spacing: .12em;
+      color: var(--muted);
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: color .2s;
+    }
+    nav a:hover { color: var(--accent1); }
+
+    /* ── HERO ── */
+    #hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 6rem 2.5rem 4rem;
+      overflow: hidden;
+    }
+
+    .hero-glow {
+      position: absolute;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+    }
+    .glow-blue  { background: rgba(56,189,248,.12); top: -100px; left: -150px; }
+    .glow-indigo{ background: rgba(129,140,248,.10); bottom: -100px; right: -100px; }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+    }
+
+    .tag {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: .7rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--accent3);
+      border: 1px solid var(--accent3);
+      padding: .25rem .7rem;
+      border-radius: 2px;
+      margin-bottom: 1.5rem;
+      animation: fadeUp .6s ease both;
+    }
+
+    h1 {
+      font-family: var(--mono);
+      font-size: clamp(2.2rem, 6vw, 4.5rem);
+      font-weight: 700;
+      line-height: 1.1;
+      animation: fadeUp .6s .1s ease both;
+    }
+    h1 .line2 {
+      display: block;
+      background: linear-gradient(90deg, var(--accent1), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      margin-top: 1.5rem;
+      font-size: 1rem;
+      color: var(--muted);
+      max-width: 480px;
+      line-height: 1.8;
+      animation: fadeUp .6s .2s ease both;
+    }
+
+    .hero-cta {
+      margin-top: 2.5rem;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      animation: fadeUp .6s .3s ease both;
+    }
+
+    .btn {
+      font-family: var(--mono);
+      font-size: .78rem;
+      letter-spacing: .1em;
+      padding: .7rem 1.6rem;
+      border-radius: 3px;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: all .25s;
+      cursor: pointer;
+    }
+    .btn-primary {
+      background: var(--accent1);
+      color: var(--bg);
+      font-weight: 700;
+    }
+    .btn-primary:hover { background: #7dd3fc; transform: translateY(-2px); }
+    .btn-outline {
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    .btn-outline:hover { border-color: var(--accent1); color: var(--accent1); transform: translateY(-2px); }
+
+    /* terminal blink */
+    .cursor {
+      display: inline-block;
+      width: 3px; height: 1em;
+      background: var(--accent1);
+      margin-left: 4px;
+      vertical-align: middle;
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* ── SECTIONS COMMON ── */
+    section { position: relative; z-index: 1; padding: 5rem 2.5rem; }
+
+    .section-label {
+      font-family: var(--mono);
+      font-size: .7rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-bottom: .75rem;
+    }
+    .section-title {
+      font-family: var(--mono);
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+      font-weight: 700;
+      margin-bottom: 3rem;
+    }
+    .section-title::after {
+      content: '';
+      display: block;
+      width: 40px; height: 2px;
+      background: linear-gradient(90deg, var(--accent1), var(--accent2));
+      margin-top: .5rem;
+    }
+
+    /* ── ABOUT ── */
+    #about { background: var(--bg2); }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+    @media (max-width: 700px) { .about-grid { grid-template-columns: 1fr; } }
+
+    .about-text p {
+      color: var(--muted);
+      line-height: 1.9;
+      margin-bottom: 1rem;
+      font-size: .95rem;
+    }
+    .about-text p strong { color: var(--text); font-weight: 500; }
+
+    .skills-block { }
+    .skill-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .skill-name {
+      font-family: var(--mono);
+      font-size: .75rem;
+      color: var(--text);
+      width: 80px;
+      flex-shrink: 0;
+    }
+    .skill-bar {
+      flex: 1;
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .skill-fill {
+      height: 100%;
+      border-radius: 2px;
+      background: linear-gradient(90deg, var(--accent1), var(--accent2));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 1s cubic-bezier(.16,1,.3,1);
+    }
+    .skill-fill.animated { transform: scaleX(1); }
+    .skill-pct {
+      font-family: var(--mono);
+      font-size: .65rem;
+      color: var(--muted);
+      width: 30px;
+      text-align: right;
+    }
+
+    /* ── NOTES ── */
+    #notes { }
+
+    .notes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .note-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.5rem;
+      transition: border-color .2s, transform .2s;
+      cursor: default;
+    }
+    .note-card:hover {
+      border-color: var(--accent1);
+      transform: translateY(-4px);
+    }
+    .note-icon {
+      font-size: 1.5rem;
+      margin-bottom: .75rem;
+    }
+    .note-subject {
+      font-family: var(--mono);
+      font-size: .7rem;
+      letter-spacing: .12em;
+      color: var(--accent3);
+      text-transform: uppercase;
+      margin-bottom: .4rem;
+    }
+    .note-title {
+      font-size: .95rem;
+      font-weight: 500;
+      margin-bottom: .5rem;
+    }
+    .note-desc {
+      font-size: .82rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ── PROJECTS ── */
+    #projects { background: var(--bg2); }
+
+    .projects-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .project-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 1rem;
+      align-items: start;
+      transition: border-color .2s;
+    }
+    .project-card:hover { border-color: var(--accent2); }
+
+    .project-meta {
+      font-family: var(--mono);
+      font-size: .68rem;
+      color: var(--accent2);
+      letter-spacing: .1em;
+      margin-bottom: .5rem;
+    }
+    .project-name {
+      font-family: var(--mono);
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: .6rem;
+    }
+    .project-desc {
+      font-size: .88rem;
+      color: var(--muted);
+      line-height: 1.75;
+      margin-bottom: 1rem;
+    }
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .4rem;
+    }
+    .chip {
+      font-family: var(--mono);
+      font-size: .65rem;
+      padding: .2rem .55rem;
+      border-radius: 2px;
+      background: rgba(56,189,248,.1);
+      color: var(--accent1);
+      border: 1px solid rgba(56,189,248,.2);
+    }
+    .project-award {
+      font-family: var(--mono);
+      font-size: .72rem;
+      color: #fbbf24;
+      text-align: right;
+      white-space: nowrap;
+    }
+    .project-award::before { content: '★ '; }
+
+    /* ── ACTIVITIES ── */
+    #activities { }
+
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 1px;
+      background: var(--border);
+    }
+
+    .tl-item {
+      position: relative;
+      margin-bottom: 2.5rem;
+    }
+    .tl-item::before {
+      content: '';
+      position: absolute;
+      left: -2.3rem;
+      top: .35rem;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--accent1);
+      box-shadow: 0 0 8px var(--accent1);
+    }
+
+    .tl-date {
+      font-family: var(--mono);
+      font-size: .68rem;
+      color: var(--accent3);
+      letter-spacing: .1em;
+      margin-bottom: .3rem;
+    }
+    .tl-title {
+      font-weight: 500;
+      font-size: 1rem;
+      margin-bottom: .35rem;
+    }
+    .tl-desc {
+      font-size: .85rem;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 2.5rem;
+      text-align: center;
+      font-family: var(--mono);
+      font-size: .7rem;
+      color: var(--muted);
+      position: relative;
+      z-index: 1;
+    }
+    footer span { color: var(--accent1); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">&lt;<span>portfolio</span> /&gt;</div>
+  <ul>
+    <li><a href="#about">About</a></li>
+    <li><a href="#notes">Notes</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#activities">Activities</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-glow glow-blue"></div>
+  <div class="hero-glow glow-indigo"></div>
+  <div class="hero-inner">
+    <div class="tag">// 高中學習歷程檔案</div>
+    <h1>
+      Hello, my name is<br>
+      <span class="line2">KitsuneUshi(狐牛)</span>
+    </h1>
+    <p class="hero-sub">
+      資訊工程方向的高中生，熱愛<strong>寫程式</strong>、<strong>解題</strong>與探索電腦科學的邊界。
+      這裡記錄我的學習軌跡與成長。
+      <span class="cursor"></span>
+    </p>
+    <div class="hero-cta">
+      <a href="#projects" class="btn btn-primary">查看專題</a>
+      <a href="#about" class="btn btn-outline">關於我</a>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="reveal">
+    <p class="section-label">// 01 · about</p>
+    <h2 class="section-title">關於我</h2>
+  </div>
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <p>
+        我是一名就讀高中的學生，對<strong>資訊工程</strong>充滿熱忱。
+        從第一次接觸程式語言開始，就深深著迷於用邏輯與創意解決問題的過程。
+      </p>
+      <p>
+        平時喜歡參加<strong>程式競賽</strong>、自學演算法，也會動手做一些小專案。
+        這個網站是我記錄學習旅程的地方——不只是成果，也包括過程中的思考與探索。
+      </p>
+      <p>
+        目標是未來能在資工領域持續鑽研，做出對社會有意義的作品。
+      </p>
+    </div>
+    <div class="skills-block reveal">
+      <p class="section-label" style="margin-bottom:1.2rem;">// 技能概覽</p>
+      <div class="skill-row">
+        <span class="skill-name">Python</span>
+        <div class="skill-bar"><div class="skill-fill" data-w=".85"></div></div>
+        <span class="skill-pct">85%</span>
+      </div>
+      <div class="skill-row">
+        <span class="skill-name">C / C++</span>
+        <div class="skill-bar"><div class="skill-fill" data-w=".7"></div></div>
+        <span class="skill-pct">70%</span>
+      </div>
+      <div class="skill-row">
+        <span class="skill-name">HTML/CSS</span>
+        <div class="skill-bar"><div class="skill-fill" data-w=".75"></div></div>
+        <span class="skill-pct">75%</span>
+      </div>
+      <div class="skill-row">
+        <span class="skill-name">演算法</span>
+        <div class="skill-bar"><div class="skill-fill" data-w=".65"></div></div>
+        <span class="skill-pct">65%</span>
+      </div>
+      <div class="skill-row">
+        <span class="skill-name">Git</span>
+        <div class="skill-bar"><div class="skill-fill" data-w=".6"></div></div>
+        <span class="skill-pct">60%</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NOTES -->
+<section id="notes">
+  <div class="reveal">
+    <p class="section-label">// 02 · notes</p>
+    <h2 class="section-title">學科學習筆記</h2>
+  </div>
+  <div class="notes-grid">
+    <div class="note-card reveal">
+      <div class="note-icon">🧮</div>
+      <p class="note-subject">數學</p>
+      <p class="note-title">微積分基礎概念整理</p>
+      <p class="note-desc">從極限、導數到積分的核心觀念，搭配視覺化輔助理解。</p>
+    </div>
+    <div class="note-card reveal">
+      <div class="note-icon">⚙️</div>
+      <p class="note-subject">資訊</p>
+      <p class="note-title">排序演算法比較</p>
+      <p class="note-desc">Bubble、Merge、Quick Sort 的原理、複雜度分析與實作。</p>
+    </div>
+    <div class="note-card reveal">
+      <div class="note-icon">🔬</div>
+      <p class="note-subject">物理</p>
+      <p class="note-title">電磁感應筆記</p>
+      <p class="note-desc">法拉第定律與冷次定律的直觀解釋與解題技巧。</p>
+    </div>
+    <div class="note-card reveal">
+      <div class="note-icon">🌐</div>
+      <p class="note-subject">英文</p>
+      <p class="note-title">學術寫作技巧</p>
+      <p class="note-desc">論文架構、轉折語用法，以及如何讓論點更具說服力。</p>
+    </div>
+    <div class="note-card reveal">
+      <div class="note-icon">📊</div>
+      <p class="note-subject">資訊</p>
+      <p class="note-title">資料結構：樹與圖</p>
+      <p class="note-desc">Binary Tree、BFS/DFS 的原理與常見應用場景整理。</p>
+    </div>
+    <div class="note-card reveal">
+      <div class="note-icon">🧬</div>
+      <p class="note-subject">生物</p>
+      <p class="note-title">DNA 複製機制</p>
+      <p class="note-desc">半保留複製、相關酵素與考題常見陷阱統整。</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="reveal">
+    <p class="section-label">// 03 · projects</p>
+    <h2 class="section-title">專題 / 競賽成果</h2>
+  </div>
+  <div class="projects-list">
+    <div class="project-card reveal">
+      <div>
+        <p class="project-meta">COMPETITION · 2024</p>
+        <p class="project-name">全國高中生程式競賽</p>
+        <p class="project-desc">
+          參加 NHSPC，解決動態規劃與圖論題目。
+          賽前三個月系統性練習演算法，最終成功進入複賽。
+        </p>
+        <div class="tags">
+          <span class="chip">C++</span>
+          <span class="chip">DP</span>
+          <span class="chip">Graph Theory</span>
+          <span class="chip">NHSPC</span>
+        </div>
+      </div>
+      <div class="project-award">複賽入圍</div>
+    </div>
+    <div class="project-card reveal">
+      <div>
+        <p class="project-meta">PROJECT · 2024</p>
+        <p class="project-name">校園智慧通報系統</p>
+        <p class="project-desc">
+          結合 Python Flask 後端與 LINE Bot，讓同學可即時回報校園設施損壞。
+          這是我第一個從需求分析到部署的完整專案。
+        </p>
+        <div class="tags">
+          <span class="chip">Python</span>
+          <span class="chip">Flask</span>
+          <span class="chip">LINE Bot</span>
+          <span class="chip">SQLite</span>
+        </div>
+      </div>
+      <div class="project-award">校內佳作</div>
+    </div>
+    <div class="project-card reveal">
+      <div>
+        <p class="project-meta">RESEARCH · 2023</p>
+        <p class="project-name">小論文：AI 圖像辨識於垃圾分類之應用</p>
+        <p class="project-desc">
+          使用 TensorFlow + MobileNet 訓練垃圾分類模型，準確率達 87%。
+          探討 AI 在環境永續議題中的潛力。
+        </p>
+        <div class="tags">
+          <span class="chip">Python</span>
+          <span class="chip">TensorFlow</span>
+          <span class="chip">CNN</span>
+          <span class="chip">小論文</span>
+        </div>
+      </div>
+      <div class="project-award">縣市優等</div>
+    </div>
+  </div>
+</section>
+
+<!-- ACTIVITIES -->
+<section id="activities">
+  <div class="reveal">
+    <p class="section-label">// 04 · activities</p>
+    <h2 class="section-title">社團 / 課外活動</h2>
+  </div>
+  <div class="timeline">
+    <div class="tl-item reveal">
+      <p class="tl-date">2024 · 高二</p>
+      <p class="tl-title">資訊社 — 社長</p>
+      <p class="tl-desc">
+        帶領社員從零開始學習 Python，規劃課程內容、舉辦校內 Hackathon，
+        吸引超過 30 名同學參與。
+      </p>
+    </div>
+    <div class="tl-item reveal">
+      <p class="tl-date">2024 · 高二</p>
+      <p class="tl-title">志工服務 — 偏鄉數位教育</p>
+      <p class="tl-desc">
+        與非營利組織合作，前往偏鄉國小教授基礎電腦操作與 Scratch 程式，
+        累計服務時數 40 小時。
+      </p>
+    </div>
+    <div class="tl-item reveal">
+      <p class="tl-date">2023 · 高一</p>
+      <p class="tl-title">學生會 — 資訊組組長</p>
+      <p class="tl-desc">
+        負責維護學校官網、設計活動宣傳素材，並建立學生問卷自動彙整系統，
+        大幅減少行政工作量。
+      </p>
+    </div>
+    <div class="tl-item reveal">
+      <p class="tl-date">2023 · 高一</p>
+      <p class="tl-title">自主學習 — 線上課程修讀</p>
+      <p class="tl-desc">
+        完成 CS50x（哈佛 OCW）、演算法設計與分析課程，
+        建立扎實的電腦科學基礎。
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>Built with ♥ by <span>[ Your Name ]</span> · Hosted on GitHub Pages</p>
+  <p style="margin-top:.4rem; font-size:.62rem; color:#2a3a52;">
+    © 2025 · 高中學習歷程檔案
+  </p>
+</footer>
+
+<script>
+  // Reveal on scroll
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Skill bars animate when about section visible
+  const skillFills = document.querySelectorAll('.skill-fill');
+  const aboutSection = document.getElementById('about');
+  const skillObserver = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting) {
+      skillFills.forEach(fill => {
+        fill.style.transform = `scaleX(${fill.dataset.w})`;
+        fill.classList.add('animated');
+      });
+      skillObserver.unobserve(aboutSection);
+    }
+  }, { threshold: 0.3 });
+  skillObserver.observe(aboutSection);
+</script>
+</body>
+</html>
