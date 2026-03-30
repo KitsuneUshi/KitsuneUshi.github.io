@@ -1,5 +1,257 @@
-<title>LEGO EV3 啟蒙 | KitsuneUshi</title>
---accent: #facc15;
-<div class="page-tag">// 學習紀錄 · 啟蒙</div>
-<h1 class="page-title">LEGO EV3 啟蒙</h1>
-<p class="page-subtitle">五歲開始的機器人課程，是我走向資工的起點。</p>
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LEGO EV3 啟蒙 | KitsuneUshi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+    --bg: #0a0a0a;
+    --bg2: #111111;
+    --panel: #1a1a1a;
+    --border: #2a2a2a;
+    --accent: #e63946;
+    --text: #f0f0f0;
+    --muted: #666666;
+    --mono: 'Space Mono', monospace;
+    --sans: 'Noto Sans TC', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-weight: 300;
+    }
+
+    body::before {
+        background-image:
+            linear-gradient(rgba(230,57,70,.06) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(230,57,70,.06) 1px, transparent 1px);
+        background-size: 40px 40px;
+        }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2.5rem;
+      background: rgba(8,14,26,.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: var(--mono);
+      font-size: .85rem;
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .nav-back {
+      font-family: var(--mono);
+      font-size: .75rem;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: .1em;
+      transition: color .2s;
+    }
+    .nav-back:hover { color: var(--accent); }
+
+    /* HERO */
+    .page-hero {
+      position: relative;
+      z-index: 1;
+      padding: 8rem 2.5rem 4rem;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(56,189,248,.05) 0%, transparent 100%);
+    }
+    .page-tag {
+      font-family: var(--mono);
+      font-size: .7rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      padding: .25rem .7rem;
+      border-radius: 2px;
+      display: inline-block;
+      margin-bottom: 1.2rem;
+    }
+    .page-title {
+      font-family: var(--mono);
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: var(--accent);
+    }
+    .page-subtitle {
+      font-size: .95rem;
+      color: var(--muted);
+      max-width: 600px;
+      line-height: 1.8;
+    }
+
+    /* CONTENT */
+    .content {
+      position: relative;
+      z-index: 1;
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 4rem 2.5rem;
+    }
+
+    .content-block {
+      margin-bottom: 3rem;
+    }
+
+    .block-label {
+      font-family: var(--mono);
+      font-size: .7rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: .75rem;
+    }
+
+    .block-title {
+      font-size: 1.1rem;
+      font-weight: 500;
+      margin-bottom: 1rem;
+      color: var(--text);
+    }
+
+    .block-text {
+      font-size: .95rem;
+      color: var(--muted);
+      line-height: 1.9;
+    }
+    .block-text p { margin-bottom: 1rem; }
+    .block-text strong { color: var(--text); font-weight: 500; }
+
+    /* SCORE CARDS */
+    .score-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .score-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.5rem;
+      text-align: center;
+    }
+    .score-label {
+      font-family: var(--mono);
+      font-size: .7rem;
+      color: var(--muted);
+      letter-spacing: .1em;
+      margin-bottom: .5rem;
+    }
+    .score-value {
+      font-family: var(--mono);
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .score-unit {
+      font-size: .8rem;
+      color: var(--muted);
+      margin-top: .25rem;
+    }
+
+    /* DIVIDER */
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: var(--border);
+      margin: 2rem 0;
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 2.5rem;
+      text-align: center;
+      font-family: var(--mono);
+      font-size: .7rem;
+      color: var(--muted);
+      position: relative;
+      z-index: 1;
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="../index.html" class="nav-logo">&lt;portfolio /&gt;</a>
+  <a href="../index.html" class="nav-back">← 返回</a>
+</nav>
+
+<div class="page-hero">
+    <div class="page-tag">// 學習紀錄 · 啟蒙</div>
+    <h1 class="page-title">LEGO EV3 啟蒙</h1>
+    <p class="page-subtitle">五歲開始的機器人課程，是我走向資工的起點。</p>
+</div>
+
+<div class="content">
+
+  <div class="content-block">
+    <p class="block-label">// 成績</p>
+    <div class="score-grid">
+      <div class="score-card">
+        <p class="score-label">觀念題</p>
+        <p class="score-value">4</p>
+        <p class="score-unit">級分</p>
+      </div>
+      <div class="score-card">
+        <p class="score-label">實作題</p>
+        <p class="score-value">3</p>
+        <p class="score-unit">級分</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="content-block">
+    <p class="block-label">// 備考過程</p>
+    <div class="block-text">
+      <p>在這裡寫你的備考心得...</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="content-block">
+    <p class="block-label">// 學到什麼</p>
+    <div class="block-text">
+      <p>在這裡寫你的收穫...</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="content-block">
+    <p class="block-label">// 給未來想考 APCS 的人</p>
+    <div class="block-text">
+      <p>在這裡寫建議...</p>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>KitsuneUshi · 學習歷程</p>
+</footer>
+
+</body>
+</html>

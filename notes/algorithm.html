@@ -1,5 +1,247 @@
-<title>演算法自學 | KitsuneUshi</title>
---accent: #4ade80;
-<div class="page-tag">// 學習紀錄 · 演算法</div>
-<h1 class="page-title">演算法自學</h1>
-<p class="page-subtitle">從排序到圖論，記錄自學演算法的過程與心得。</p>
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>演算法&資料結構自學 | KitsuneUshi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #080e1a;
+      --bg2: #0d1625;
+      --panel: #111d30;
+      --border: #1e3050;
+      --accent: #4ade80;
+      --text: #e2eaf8;
+      --muted: #64748b;
+      --mono: 'Space Mono', monospace;
+      --sans: 'Noto Sans TC', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-weight: 300;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(56,189,248,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(56,189,248,.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2.5rem;
+      background: rgba(8,14,26,.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: var(--mono);
+      font-size: .85rem;
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .nav-back {
+      font-family: var(--mono);
+      font-size: .75rem;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: .1em;
+      transition: color .2s;
+    }
+    .nav-back:hover { color: var(--accent); }
+
+    /* HERO */
+    .page-hero {
+      position: relative;
+      z-index: 1;
+      padding: 8rem 2.5rem 4rem;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(56,189,248,.05) 0%, transparent 100%);
+    }
+    .page-tag {
+      font-family: var(--mono);
+      font-size: .7rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      padding: .25rem .7rem;
+      border-radius: 2px;
+      display: inline-block;
+      margin-bottom: 1.2rem;
+    }
+    .page-title {
+      font-family: var(--mono);
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: var(--accent);
+    }
+    .page-subtitle {
+      font-size: .95rem;
+      color: var(--muted);
+      max-width: 600px;
+      line-height: 1.8;
+    }
+
+    /* CONTENT */
+    .content {
+      position: relative;
+      z-index: 1;
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 4rem 2.5rem;
+    }
+
+    .content-block {
+      margin-bottom: 3rem;
+    }
+
+    .block-label {
+      font-family: var(--mono);
+      font-size: .7rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: .75rem;
+    }
+
+    .block-title {
+      font-size: 1.1rem;
+      font-weight: 500;
+      margin-bottom: 1rem;
+      color: var(--text);
+    }
+
+    .block-text {
+      font-size: .95rem;
+      color: var(--muted);
+      line-height: 1.9;
+    }
+    .block-text p { margin-bottom: 1rem; }
+    .block-text strong { color: var(--text); font-weight: 500; }
+
+    /* SCORE CARDS */
+    .score-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .score-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.5rem;
+      text-align: center;
+    }
+    .score-label {
+      font-family: var(--mono);
+      font-size: .7rem;
+      color: var(--muted);
+      letter-spacing: .1em;
+      margin-bottom: .5rem;
+    }
+    .score-value {
+      font-family: var(--mono);
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .score-unit {
+      font-size: .8rem;
+      color: var(--muted);
+      margin-top: .25rem;
+    }
+
+    /* DIVIDER */
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: var(--border);
+      margin: 2rem 0;
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 2.5rem;
+      text-align: center;
+      font-family: var(--mono);
+      font-size: .7rem;
+      color: var(--muted);
+      position: relative;
+      z-index: 1;
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="../index.html" class="nav-logo">&lt;portfolio /&gt;</a>
+  <a href="../index.html" class="nav-back">← 返回</a>
+</nav>
+
+<div class="page-hero">
+    <div class="page-tag">// 學習紀錄 · 演算法&資料結構</div>
+    <h1 class="page-title">演算法&資料結構自學</h1>
+    <p class="page-subtitle">從搜尋到圖論，記錄自學演算法&資料結構的過程與心得。</p>
+</div>
+
+<div class="content">
+
+  <div class="content-block">
+
+  <div class="content-block">
+    <p class="block-label">// 學習資源</p>
+    <div class="block-text">
+        <p>學習演算法主要靠網路上的教學資源及資電資訊教育的課程，特別推薦 <strong>Take U Forward</strong> 與 <strong>Yui Huang 演算法學習筆記</strong>，兩者講解清晰，很適合自學。練題方面主要使用 <strong>ZeroJudge</strong>，最近也計畫轉戰 <strong>Codeforces</strong> 挑戰更多題型。</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="content-block">
+    <p class="block-label">// 掌握的主題</p>
+    <div class="block-text">
+        <p>目前比較有把握的資料結構與演算法包括：<strong>Stack、Queue、DFS、BFS、二元樹、Graph</strong>。這些主題經過多次練題與實際應用，已經能夠靈活運用在解題上。</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="content-block">
+    <p class="block-label">// 還在努力的地方</p>
+    <div class="block-text">
+        <p>目前仍在努力的主題包括：<strong>BIT（Binary Indexed Tree）、線段樹、map、set、unordered_map、unordered_set、heap</strong>。這些資料結構的特性與應用場景還需要更多練習才能熟練掌握。</p>
+        <p>老實說，目前的練題習慣是<strong>遇到檢定才特別衝刺</strong>，還沒養成固定刷題的習慣——這也是接下來想改善的地方。</p>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>KitsuneUshi · 學習歷程</p>
+</footer>
+
+</body>
+</html>
