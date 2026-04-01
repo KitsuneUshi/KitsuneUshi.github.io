@@ -181,6 +181,34 @@
       margin: 2rem 0;
     }
 
+    .score-card.pass {
+      border-color: #4ade80;
+      cursor: pointer;
+    }
+    .score-card.pass .score-value,
+    .score-card.pass .score-unit {
+      color: #4ade80;
+    }
+    .score-card.fail {
+      border-color: #f87171;
+      cursor: pointer;
+    }
+    .score-card.fail .score-value,
+    .score-card.fail .score-unit {
+      color: #f87171;
+    }
+    .cert-hint {
+      font-size: .65rem;
+      color: var(--muted);
+      margin-top: .75rem;
+      font-family: var(--mono);
+      letter-spacing: .05em;
+    }
+    .score-card:hover {
+      transform: translateY(-3px);
+      transition: transform .2s;
+    }
+
     /* FOOTER */
     footer {
       border-top: 1px solid var(--border);
@@ -192,6 +220,9 @@
       position: relative;
       z-index: 1;
     }
+
+
+
     @media (max-width: 600px) {
   .score-grid {
     grid-template-columns: 1fr 1fr !important;
@@ -209,34 +240,38 @@
 <div class="page-hero">
   <div class="page-tag">// 學習紀錄 · APX</div>
   <h1 class="page-title">APX 物理&數學備考</h1>
-  <p class="page-subtitle">記錄備考物理&數學的心路歷程。</p>
+  <p class="page-subtitle">記錄考APX物理&數學的心路歷程。</p>
 </div>
 
 <div class="content">
   <div class="content-block">
     <p class="block-label">// 成績</p>
     <div class="score-grid" style="grid-template-columns: 1fr 1fr 1fr 1fr;">
-        <div class="score-card">
-            <p class="score-label">數學 第一次</p>
-            <p class="score-value">中級</p>
-            <p class="score-unit">通過</p>
-        </div>
-        <div class="score-card">
-            <p class="score-label">物理 第一次</p>
-            <p class="score-value">中高級</p>
-            <p class="score-unit">未通過</p>
-        </div>
-        <div class="score-card">
-            <p class="score-label">數學 第二次</p>
-            <p class="score-value">中高級</p>
-            <p class="score-unit">未通過</p>
-        </div>
-        <div class="score-card">
-            <p class="score-label">物理 第二次</p>
-            <p class="score-value">中高級</p>
-            <p class="score-unit">通過</p>
-        </div>
+    <div class="score-card pass" onclick="openCert('../assets/math_m_pass.pdf')">
+      <p class="score-label">數學 第一次</p>
+      <p class="score-value">中級</p>
+      <p class="score-unit">通過</p>
+      <p class="cert-hint">點擊查看證書</p>
     </div>
+    <div class="score-card fail" onclick="openCert('../assets/phy_mh_participate.pdf')">
+      <p class="score-label">物理 第一次</p>
+      <p class="score-value">中高級</p>
+      <p class="score-unit">未通過</p>
+      <p class="cert-hint">點擊查看證書</p>
+    </div>
+    <div class="score-card fail" onclick="openCert('../assets/math_mh_participate.pdf')">
+      <p class="score-label">數學 第二次</p>
+      <p class="score-value">中高級</p>
+      <p class="score-unit">未通過</p>
+      <p class="cert-hint">點擊查看證書</p>
+    </div>
+    <div class="score-card pass" onclick="openCert('../assets/phy_mh_pass.pdf')">
+      <p class="score-label">物理 第二次</p>
+      <p class="score-value">中高級</p>
+      <p class="score-unit">通過</p>
+      <p class="cert-hint">點擊查看證書</p>
+    </div>
+  </div>
 </div>
 
   <div class="divider"></div>
@@ -244,7 +279,7 @@
   <div class="content-block">
     <p class="block-label">// 備考過程</p>
     <div class="block-text">
-        <p>我參加過<strong>兩次 APX</strong>，分別是升高一下與升高二的暑假。數學與物理都沒有特別準備，主要靠<strong>平時上課的知識與講義題目</strong>維持手感。</p>
+        <p>我參加過<strong>兩次 APX</strong>，分別是升高一下與升高二下的暑假。數學與物理都沒有特別準備，主要靠<strong>平時上課的知識與講義題目</strong>維持手感。</p>
         <p>數學與物理相比，<strong>數學較難準備</strong>，因為題目更變幻莫測，難以預測考點方向。第二次數學中高未通過，主要是<strong>高三數甲下的內容較不熟悉</strong>，尤其是二次曲線這個區塊，掌握度明顯不足。</p>
         <p>物理方面最吃力的是<strong>氣體動力論與光學</strong>，這兩個主題的題目寫起來很吃力，需要更多練習才能應對。</p>
     </div>
@@ -276,4 +311,11 @@
 </footer>
 
 </body>
+
+<script>
+  function openCert(path) {
+    window.open(path, '_blank');
+  }
+</script>
+
 </html>
