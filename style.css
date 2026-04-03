@@ -181,6 +181,15 @@
     }
     @keyframes blink { 50% { opacity: 0; } }
 
+    /* name typing cursor */
+    .name-cursor {
+      display: inline-block;
+      font-weight: 300;
+      color: var(--accent1);
+      animation: blink 1s step-end infinite;
+      margin-left: 2px;
+    }
+
     /* ── SECTIONS COMMON ── */
     section { position: relative; z-index: 1; padding: 5rem 2.5rem; }
 

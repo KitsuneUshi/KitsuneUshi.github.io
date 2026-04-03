@@ -30,7 +30,7 @@
     <div class="tag">// 程式 · 模型 · 遊戲</div>
     <h1>
       Hello, my name is<br>
-      <span class="line2">李亞儒</span>
+      <span class="line2"><span id="typed-name"></span><span class="name-cursor">|</span></span>
     </h1>
     <p class="hero-sub">
       從五歲用 LEGO EV3 讓機器人動起來，就著迷於寫程式解決問題。現在是個熱愛<strong>隻狼</strong>、<strong>模型組裝</strong>與<strong>資訊工程</strong>的高中生，正在開發 LLM AI 專案。這裡記錄我的學習軌跡與成長。
@@ -270,6 +270,48 @@
 </footer>
 
 <script>
+  // Name typewriter effect
+  (function() {
+    const el = document.getElementById('typed-name');
+    const names = ['李亞儒', 'KitsuneUshi', 'Andrew.Σ.Lee'];
+    let nameIdx = 0;
+    let charIdx = 0;
+    let deleting = false;
+
+    const TYPE_SPEED   = 120;
+    const DELETE_SPEED = 70;
+    const PAUSE_AFTER  = 1800;
+    const PAUSE_BEFORE = 400;
+
+    function tick() {
+      const current = names[nameIdx];
+
+      if (!deleting) {
+        el.textContent = current.slice(0, charIdx + 1);
+        charIdx++;
+        if (charIdx === current.length) {
+          if (nameIdx === names.length - 1) return; // 最後一個名字，停住
+          deleting = true;
+          setTimeout(tick, PAUSE_AFTER);
+          return;
+        }
+        setTimeout(tick, TYPE_SPEED);
+      } else {
+        el.textContent = current.slice(0, charIdx - 1);
+        charIdx--;
+        if (charIdx === 0) {
+          deleting = false;
+          nameIdx++;
+          setTimeout(tick, PAUSE_BEFORE);
+          return;
+        }
+        setTimeout(tick, DELETE_SPEED);
+      }
+    }
+
+    setTimeout(tick, 800);
+  })();
+
   // Reveal on scroll
   const reveals = document.querySelectorAll('.reveal');
   const observer = new IntersectionObserver((entries) => {
