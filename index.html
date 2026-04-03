@@ -290,8 +290,7 @@
         el.textContent = current.slice(0, charIdx + 1);
         charIdx++;
         if (charIdx === current.length) {
-          if (nameIdx === names.length - 1) return; // 最後一個名字，停住
-          deleting = true;
+            deleting = true;
           setTimeout(tick, PAUSE_AFTER);
           return;
         }
@@ -301,7 +300,7 @@
         charIdx--;
         if (charIdx === 0) {
           deleting = false;
-          nameIdx++;
+          nameIdx = (nameIdx + 1) % names.length;
           setTimeout(tick, PAUSE_BEFORE);
           return;
         }
