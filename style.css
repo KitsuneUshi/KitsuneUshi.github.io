@@ -335,13 +335,13 @@
     }
     .note-title {
       font-size: 1rem;
-      font-weight: 500;
+      font-weight: 700;
       margin-bottom: .6rem;
       color: var(--text);
     }
     .note-desc {
-      font-size: .82rem;
-      color: var(--muted);
+      font-size: .88rem;
+      color: var(--text);
       line-height: 1.75;
     }
 
@@ -381,8 +381,8 @@
       margin-bottom: .6rem;
     }
     .project-desc {
-      font-size: .88rem;
-      color: var(--muted);
+      font-size: .9rem;
+      color: var(--text);
       line-height: 1.75;
       margin-bottom: 1rem;
     }
@@ -456,14 +456,15 @@
       margin-bottom: .3rem;
     }
     .tl-title {
-      font-weight: 500;
+      font-weight: 700;
       font-size: 1rem;
       margin-bottom: .35rem;
+      color: #fff;
     }
     .tl-desc {
-      font-size: .85rem;
-      color: var(--muted);
-      line-height: 1.75;
+      font-size: .9rem;
+      color: var(--text);
+      line-height: 1.85;
     }
     .tl-link {
       display: inline-block;
