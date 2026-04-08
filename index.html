@@ -30,7 +30,7 @@
     <div class="tag">// 程式 · 模型 · 遊戲</div>
     <h1>
       Hello, my name is<br>
-      <span class="line2">李亞儒</span>
+      <span class="line2"><span id="typewriter"></span><span class="type-cursor">▋</span></span>
     </h1>
     <p class="hero-sub">
       從五歲用 LEGO EV3 讓機器人動起來，就著迷於寫程式解決問題。現在是個熱愛<strong>隻狼</strong>、<strong>模型組裝</strong>與<strong>資訊工程</strong>的高中生，正在開發 LLM AI 專案。這裡記錄我的學習軌跡與成長。
@@ -51,16 +51,9 @@
   </div>
   <div class="about-grid">
     <div class="about-text reveal">
-    <p>
-      我是<strong>KitsuneUshi(狐牛)</strong>，一名對<strong>資訊工程</strong>充滿熱忱的高中生。
-      從五歲第一次用 LEGO MINDSTORM EV3 的簡易成式讓機器人動起來，，我就著迷於「寫程式解決問題」這件事。
-    </p>
-    <p>
-      升上高中後開始系統性學習演算法與資料結構，目前正在挑戰開發一個具備長期記憶、Live2D 表情系統與 TTS 語音的 LLM AI 伴侶專案。
-    </p>
-    <p>
-      平時是個喜歡隻狼、Undertale、碧藍航線的宅宅，也熱愛模型組裝——我相信對細節的執著，不管是在遊戲、模型還是程式碼裡，都是同一種心態。
-    </p>
+      <p>我是<strong>KitsuneUshi(狐牛)</strong>，從五歲第一次用 <strong>LEGO MINDSTORM EV3</strong> 讓機器人動起來，就著迷於「讓東西照自己的意思運作」這件事。那不只是寫程式的起點，也是我第一次感受到<strong>機電整合</strong>的魔力。</p>
+      <p>高中開始拼 <strong>MG 以上級別的鋼彈模型</strong>，每次看到原型師在有限空間裡設計出精巧的<strong>可動機構與連動結構</strong>，都會讓我忍不住讚嘆——這種對精密設計的著迷，讓我意識到自己對<strong>機械工程</strong>有真實的好奇，而不只是旁觀者。</p>
+      <p>現在我在學習<strong>資訊工程</strong>、鑽研<strong>演算法</strong>，同時也在開發 <strong>LLM AI 伴侶專案</strong>。但我愈來愈清楚地感覺到，軟體有它的邊界——真正想做的東西，需要讓它在現實世界裡動起來。<strong>機械與資工雙主修</strong>，是我為自己規劃的答案。</p>
     </div>
     <div class="skills-block reveal">
       <p class="section-label" style="margin-bottom:1.2rem;">// 技能概覽</p>
@@ -94,98 +87,103 @@
 </section>
 
 <!-- NOTES -->
-
-<div class="notes-grid">
-  <a href="notes/apcs.html" class="note-card reveal">
-    <div class="note-icon">⚙️</div>
-    <p class="note-subject">資訊</p>
-    <p class="note-title">APCS 備考心得</p>
-    <p class="note-desc">觀念題 4 級、實作題 3 級。備考過程中踩過的坑與學到的東西。</p>
-  </a>
-  <a href="notes/apx.html" class="note-card reveal">
-    <div class="note-icon">🔬</div>
-    <p class="note-subject">物理&數學</p>
-    <p class="note-title">APX 物理&數學備考</p>
-    <p class="note-desc">兩次參賽紀錄，物理中高通過，差 1.5 分銅牌。</p>
-  </a>
-  <a href="notes/algorithm.html" class="note-card reveal">
-    <div class="note-icon">📊</div>
-    <p class="note-subject">資訊</p>
-    <p class="note-title">演算法&資料結構自學</p>
-    <p class="note-desc">從 Stack、BFS/DFS 到 Graph，記錄自學演算法的過程與心得。</p>
-  </a>
-  <a href="notes/llm.html" class="note-card reveal">
-    <div class="note-icon">🤖</div>
-    <p class="note-subject">專案</p>
-    <p class="note-title">LLM AI 伴侶專案</p>
-    <p class="note-desc">開發具備長期記憶、Live2D 與 TTS 的 AI 伴侶，從一段捨不得失去的回憶開始。</p>
-  </a>
-  <a href="notes/ev3.html" class="note-card reveal">
-    <div class="note-icon">🤖</div>
-    <p class="note-subject">啟蒙</p>
-    <p class="note-title">LEGO EV3 啟蒙</p>
-    <p class="note-desc">五歲開始的機器人課程，是我走向資工的起點。</p>
-  </a>
-</div>
+<section id="notes">
+  <div class="reveal">
+    <p class="section-label">// 02 · notes</p>
+    <h2 class="section-title">學習筆記</h2>
+  </div>
+  <div class="notes-grid">
+    <a href="notes/apcs.html" class="note-card reveal">
+      <div class="note-icon">⚙️</div>
+      <p class="note-subject">資訊</p>
+      <p class="note-title">APCS 備考心得</p>
+      <p class="note-desc">觀念題 4 級、實作題 3 級。備考過程中踩過的坑與學到的東西。</p>
+    </a>
+    <a href="notes/apx.html" class="note-card reveal">
+      <div class="note-icon">🔬</div>
+      <p class="note-subject">物理&數學</p>
+      <p class="note-title">APX 物理&數學備考</p>
+      <p class="note-desc">兩次參賽紀錄，物理中高通過，差 1.5 分銅牌。</p>
+    </a>
+    <a href="notes/algorithm.html" class="note-card reveal">
+      <div class="note-icon">📊</div>
+      <p class="note-subject">資訊</p>
+      <p class="note-title">演算法&資料結構自學</p>
+      <p class="note-desc">從 Stack、BFS/DFS 到 Graph，記錄自學演算法的過程與心得。</p>
+    </a>
+    <a href="notes/llm.html" class="note-card reveal">
+      <div class="note-icon">🤖</div>
+      <p class="note-subject">專案</p>
+      <p class="note-title">LLM AI 伴侶專案</p>
+      <p class="note-desc">開發具備長期記憶、Live2D 與 TTS 的 AI 伴侶，從一段捨不得失去的回憶開始。</p>
+    </a>
+    <a href="notes/ev3.html" class="note-card reveal">
+      <div class="note-icon">🤖</div>
+      <p class="note-subject">啟蒙</p>
+      <p class="note-title">LEGO EV3 啟蒙</p>
+      <p class="note-desc">五歲開始的機器人課程，是我走向資工的起點。</p>
+    </a>
+  </div>
+</section>
 
 <!-- PROJECTS -->
 <section id="projects">
   <div class="reveal">
     <p class="section-label">// 03 · projects</p>
-    <h2 class="section-title">專題 / 競賽成果</h2>
+    <h2 class="section-title">專題</h2>
   </div>
   <div class="projects-list">
-    <div class="project-card reveal">
+    <a href="projects/projectile.html" class="project-card reveal">
       <div>
-        <p class="project-meta">COMPETITION · 2024</p>
-        <p class="project-name">全國高中生程式競賽</p>
+        <p class="project-meta">PROJECT · 2026</p>
+        <p class="project-name">旋轉拋體實驗 — 物理專題</p>
         <p class="project-desc">
-          參加 NHSPC，解決動態規劃與圖論題目。
-          賽前三個月系統性練習演算法，最終成功進入複賽。
+          以 LEGO MINDSTORM EV3 為實驗裝置，探討剛體旋轉拋體質心位置與支點距離對最大飛行高度的非線性影響，並以平行軸定理建立數學模型驗證實驗結果。
         </p>
         <div class="tags">
-          <span class="chip">C++</span>
-          <span class="chip">DP</span>
-          <span class="chip">Graph Theory</span>
-          <span class="chip">NHSPC</span>
+          <span class="chip">Physics</span>
+          <span class="chip">LEGO EV3</span>
+          <span class="chip">剛體力學</span>
+          <span class="chip">LaTeX</span>
+          <span class="chip">DaVinci Resolve</span>
         </div>
+        <p class="project-role">組長・實驗設計・數據分析・報告編排・LaTeX 排版</p>
       </div>
-      <div class="project-award">複賽入圍</div>
-    </div>
-    <div class="project-card reveal">
+    </a>
+    <a href="projects/electroplating.html" class="project-card reveal">
       <div>
         <p class="project-meta">PROJECT · 2024</p>
-        <p class="project-name">校園智慧通報系統</p>
+        <p class="project-name">探究與實作 — 神奇電鍍・去優養化・微型電路</p>
         <p class="project-desc">
-          結合 Python Flask 後端與 LINE Bot，讓同學可即時回報校園設施損壞。
-          這是我第一個從需求分析到部署的完整專案。
+          以自製鎂銅隨行電池為電源，同時驅動電鍍裝置（硬幣鍍鋅，光澤度達 135GU）與電解去優養化裝置，探討電化學技術在材料工程與環境保護上的應用。
         </p>
         <div class="tags">
-          <span class="chip">Python</span>
-          <span class="chip">Flask</span>
-          <span class="chip">LINE Bot</span>
-          <span class="chip">SQLite</span>
+          <span class="chip">電鍍</span>
+          <span class="chip">環境工程</span>
+          <span class="chip">電解</span>
+          <span class="chip">電路設計</span>
+          <span class="chip">高一下</span>
         </div>
+        <p class="project-role">組長・計畫實驗・作圖分析</p>
       </div>
-      <div class="project-award">校內佳作</div>
-    </div>
-    <div class="project-card reveal">
+    </a>
+    <a href="projects/solar.html" class="project-card reveal">
       <div>
-        <p class="project-meta">RESEARCH · 2023</p>
-        <p class="project-name">小論文：AI 圖像辨識於垃圾分類之應用</p>
+        <p class="project-meta">PROJECT · 2023</p>
+        <p class="project-name">探究與實作 — 微型光電</p>
         <p class="project-desc">
-          使用 TensorFlow + MobileNet 訓練垃圾分類模型，準確率達 87%。
-          探討 AI 在環境永續議題中的潛力。
+          以氧化還原原理探討隨行電池與光敏染料電池的最佳化配置，並整合電路以並聯 12 顆鎂銅電池點亮 123 顆 LED 燈。符合綠色化學 12 項原則。
         </p>
         <div class="tags">
-          <span class="chip">Python</span>
-          <span class="chip">TensorFlow</span>
-          <span class="chip">CNN</span>
-          <span class="chip">小論文</span>
+          <span class="chip">電化學</span>
+          <span class="chip">綠色能源</span>
+          <span class="chip">電路設計</span>
+          <span class="chip">光敏染料電池</span>
+          <span class="chip">高一上</span>
         </div>
+        <p class="project-role">組長・實驗設計・數據分析・報告編排</p>
       </div>
-      <div class="project-award">縣市優等</div>
-    </div>
+    </a>
   </div>
 </section>
 
@@ -295,6 +293,46 @@
     }
   }, { threshold: 0.3 });
   skillObserver.observe(aboutSection);
+
+  // Typewriter effect
+  const names = ['李亞儒', 'KitsuneUshi', 'Andrew.Σ.Lee'];
+  const tw = document.getElementById('typewriter');
+  let nameIdx = 0, charIdx = 0, deleting = false;
+
+  const TYPE_SPEED  = 120;
+  const DELETE_SPEED = 70;
+  const PAUSE_AFTER  = 1800;
+  const PAUSE_BEFORE = 400;
+
+  function tick() {
+    const current = names[nameIdx];
+
+    if (!deleting) {
+      // typing
+      charIdx++;
+      tw.textContent = current.slice(0, charIdx);
+      if (charIdx === current.length) {
+        deleting = true;
+        setTimeout(tick, PAUSE_AFTER);
+        return;
+      }
+      setTimeout(tick, TYPE_SPEED);
+    } else {
+      // deleting
+      charIdx--;
+      tw.textContent = current.slice(0, charIdx);
+      if (charIdx === 0) {
+        deleting = false;
+        nameIdx = (nameIdx + 1) % names.length;
+        setTimeout(tick, PAUSE_BEFORE);
+        return;
+      }
+      setTimeout(tick, DELETE_SPEED);
+    }
+  }
+
+  // 等 hero 動畫結束再開始打字
+  setTimeout(tick, 900);
 </script>
 </body>
 </html>

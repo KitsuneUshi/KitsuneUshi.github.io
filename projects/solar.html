@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>探究與實作 — 微型光電 | KitsuneUshi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:      #080e1a;
+      --bg2:     #0d1625;
+      --panel:   #111d30;
+      --border:  #1e3050;
+      --accent1: #38bdf8;
+      --accent2: #818cf8;
+      --accent3: #34d399;
+      --text:    #e2eaf8;
+      --muted:   #64748b;
+      --mono:    'Space Mono', monospace;
+      --sans:    'Noto Sans TC', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-weight: 300;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(56,189,248,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(56,189,248,.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none; z-index: 0;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 2.5rem;
+      background: rgba(8,14,26,.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { font-family: var(--mono); font-size: .85rem; color: var(--accent1); text-decoration: none; }
+    .nav-logo span { color: var(--accent2); }
+    .nav-back {
+      font-family: var(--mono); font-size: .75rem; letter-spacing: .1em;
+      color: var(--muted); text-decoration: none; transition: color .2s;
+    }
+    .nav-back:hover { color: var(--accent1); }
+
+    /* ── PAGE HERO ── */
+    .page-hero {
+      position: relative; z-index: 1;
+      padding: 8rem 2.5rem 4rem;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(52,211,153,.06) 0%, transparent 100%);
+      overflow: hidden;
+    }
+    .page-hero::before {
+      content: '';
+      position: absolute; top: -120px; right: -80px;
+      width: 500px; height: 500px; border-radius: 50%;
+      background: rgba(52,211,153,.07);
+      filter: blur(100px); pointer-events: none;
+    }
+    .hero-inner { position: relative; z-index: 1; max-width: 860px; }
+
+    .page-tag {
+      font-family: var(--mono); font-size: .68rem;
+      letter-spacing: .18em; text-transform: uppercase;
+      color: var(--accent3); border: 1px solid var(--accent3);
+      padding: .22rem .7rem; border-radius: 2px;
+      display: inline-block; margin-bottom: 1.2rem;
+    }
+    .page-title {
+      font-family: var(--mono);
+      font-size: clamp(1.6rem, 4vw, 2.8rem);
+      font-weight: 700; line-height: 1.2;
+      margin-bottom: 1rem;
+      background: linear-gradient(90deg, var(--accent3), var(--accent1));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .page-subtitle {
+      font-size: .92rem; color: var(--muted);
+      max-width: 580px; line-height: 1.85;
+      margin-bottom: 1.5rem;
+    }
+    .hero-meta {
+      display: flex; align-items: center; gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .hero-meta-item {
+      font-family: var(--mono); font-size: .68rem;
+      color: var(--muted); letter-spacing: .08em;
+    }
+    .hero-meta-item span { color: var(--accent3); }
+    .chips { display: flex; gap: .4rem; flex-wrap: wrap; margin-top: 1.25rem; }
+    .chip {
+      font-family: var(--mono); font-size: .62rem;
+      padding: .2rem .55rem; border-radius: 2px;
+      background: rgba(52,211,153,.1); color: var(--accent3);
+      border: 1px solid rgba(52,211,153,.25);
+    }
+    .role-badge {
+      font-family: var(--mono); font-size: .68rem;
+      color: var(--accent2); letter-spacing: .05em;
+      margin-top: 1rem;
+    }
+    .role-badge::before { content: '// '; opacity: .5; }
+
+    /* ── CONTENT ── */
+    .content {
+      position: relative; z-index: 1;
+      max-width: 860px; margin: 0 auto;
+      padding: 4rem 2.5rem 6rem;
+    }
+
+    .section-block { margin-bottom: 3.5rem; }
+
+    .sec-label {
+      font-family: var(--mono); font-size: .68rem;
+      letter-spacing: .2em; text-transform: uppercase;
+      color: var(--accent2); margin-bottom: .6rem;
+    }
+    .sec-title {
+      font-family: var(--mono); font-size: 1.05rem;
+      font-weight: 700; margin-bottom: 1.25rem;
+      padding-bottom: .75rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .prose {
+      font-size: .93rem; color: var(--muted); line-height: 1.95;
+    }
+    .prose p { margin-bottom: 1.1rem; }
+    .prose p:last-child { margin-bottom: 0; }
+    .prose strong { color: var(--text); font-weight: 500; }
+
+    /* ── 三主題卡片 ── */
+    .subtopic-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      margin-top: .25rem;
+    }
+    @media (max-width: 700px) { .subtopic-grid { grid-template-columns: 1fr; } }
+
+    .subtopic-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.5rem;
+      position: relative; overflow: hidden;
+      transition: border-color .25s, transform .25s;
+    }
+    .subtopic-card:hover { border-color: var(--accent1); transform: translateY(-3px); }
+    .subtopic-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 2px;
+    }
+    .subtopic-card:nth-child(1)::before { background: linear-gradient(90deg, var(--accent3), var(--accent1)); }
+    .subtopic-card:nth-child(2)::before { background: linear-gradient(90deg, var(--accent1), var(--accent2)); }
+    .subtopic-card:nth-child(3)::before { background: linear-gradient(90deg, var(--accent2), var(--accent3)); }
+
+    .subtopic-num {
+      font-family: var(--mono); font-size: .65rem;
+      color: var(--muted); letter-spacing: .15em;
+      margin-bottom: .5rem;
+    }
+    .subtopic-name {
+      font-family: var(--mono); font-size: .88rem;
+      font-weight: 700; color: var(--text);
+      margin-bottom: .85rem;
+    }
+    .subtopic-body {
+      font-size: .82rem; color: var(--muted); line-height: 1.8;
+    }
+    .subtopic-body strong { color: var(--text); font-weight: 500; }
+
+    /* ── 成果數字卡片 ── */
+    .result-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem; margin-top: .25rem;
+    }
+    @media (max-width: 700px) { .result-grid { grid-template-columns: 1fr; } }
+
+    .result-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px; padding: 1.5rem 1.25rem;
+      text-align: center;
+    }
+    .result-label {
+      font-family: var(--mono); font-size: .65rem;
+      color: var(--muted); letter-spacing: .1em;
+      text-transform: uppercase; margin-bottom: .6rem;
+    }
+    .result-value {
+      font-family: var(--mono); font-size: 2rem;
+      font-weight: 700; line-height: 1;
+      margin-bottom: .4rem;
+    }
+    .result-card:nth-child(1) .result-value { color: var(--accent3); }
+    .result-card:nth-child(2) .result-value { color: var(--accent1); }
+    .result-card:nth-child(3) .result-value { color: var(--accent2); }
+    .result-desc {
+      font-size: .78rem; color: var(--muted); line-height: 1.6;
+    }
+    .result-best {
+      font-size: .75rem; color: var(--muted);
+      margin-top: .7rem; line-height: 1.6;
+      border-top: 1px solid var(--border); padding-top: .7rem;
+      text-align: left;
+    }
+    .result-best strong { color: var(--text); font-weight: 500; }
+
+    /* ── DIVIDER ── */
+    .divider {
+      width: 100%; height: 1px;
+      background: var(--border); margin: .5rem 0 3.5rem;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 2.5rem; text-align: center;
+      font-family: var(--mono); font-size: .7rem;
+      color: var(--muted); position: relative; z-index: 1;
+    }
+    footer a { color: var(--muted); text-decoration: none; transition: color .2s; }
+    footer a:hover { color: var(--accent1); }
+
+    /* ── FILE CTA ── */
+    .file-cta {
+      margin-top: 1rem;
+      padding-top: 2.5rem;
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .btn-file {
+      display: inline-flex; align-items: center; gap: .6rem;
+      font-family: var(--mono); font-size: .78rem;
+      letter-spacing: .1em; text-transform: uppercase;
+      text-decoration: none;
+      color: var(--bg);
+      background: var(--accent3);
+      padding: .65rem 1.5rem;
+      border-radius: 3px;
+      font-weight: 700;
+      transition: background .2s, transform .2s;
+    }
+    .btn-file:hover { background: #6ee7b7; transform: translateY(-2px); }
+    .btn-file-icon { font-size: 1rem; line-height: 1; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="../index.html" class="nav-logo">&lt;<span>portfolio</span> /&gt;</a>
+  <a href="../index.html#projects" class="nav-back">← 返回專題</a>
+</nav>
+
+<!-- HERO -->
+<div class="page-hero">
+  <div class="hero-inner">
+    <div class="page-tag">// projects · 探究與實作 · 高一上</div>
+    <h1 class="page-title">探究與實作<br>微型光電</h1>
+    <p class="page-subtitle">以氧化還原原理探討隨行電池與光敏染料電池的最佳化配置，並整合電路以並聯 12 顆鎂銅電池點亮 123 顆 LED 燈。符合綠色化學 12 項原則。</p>
+    <div class="hero-meta">
+      <span class="hero-meta-item">年份 <span>2024</span></span>
+      <span class="hero-meta-item">類型 <span>探究與實作專題</span></span>
+    </div>
+    <div class="chips">
+      <span class="chip">電化學</span>
+      <span class="chip">綠色能源</span>
+      <span class="chip">電路設計</span>
+      <span class="chip">光敏染料電池</span>
+      <span class="chip">能斯特方程式</span>
+    </div>
+    <p class="role-badge">組長・實驗設計・數據分析・報告編排</p>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- 01 · 專題背景 -->
+  <div class="section-block">
+    <p class="sec-label">// 01 · 背景</p>
+    <h2 class="sec-title">專題緣起</h2>
+    <div class="prose">
+      <p>本專題由三個子題組成，各有其緣起。<strong>隨行電池</strong>源自國三化學課程中的電化學單元，我們嘗試將課本中<strong>還原電位</strong>的原理實際轉化為可運作的電池設計；<strong>光敏染料電池</strong>則呼應近年盛行的<strong>綠色化學</strong>理念，探討如何以低能耗、環保的方式取代傳統太陽能板；最後的<strong>電路整合</strong>，是為了串連國三物理的電路課程，將三個子題的成果合而為一。</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 02 · 實驗架構 -->
+  <div class="section-block">
+    <p class="sec-label">// 02 · 架構</p>
+    <h2 class="sec-title">實驗設計</h2>
+    <div class="subtopic-grid">
+      <div class="subtopic-card">
+        <p class="subtopic-num">TOPIC · 01</p>
+        <p class="subtopic-name">隨行電池</p>
+        <p class="subtopic-body">自行設計雙電池裝置，操縱變因包含<strong>陰極半電池種類</strong>、<strong>陽極半電池種類</strong>與<strong>鹽橋填充物種類</strong>，透過系統性實驗找出能產生最大電壓的電池配置。</p>
+      </div>
+      <div class="subtopic-card">
+        <p class="subtopic-num">TOPIC · 02</p>
+        <p class="subtopic-name">光敏染料電池</p>
+        <p class="subtopic-body">以生活中常見的天然素材萃取染料，製作較為環保的光敏電池。操縱變因包含<strong>染料種類</strong>、<strong>光源波長</strong>與 <strong>KI₃ 濃度</strong>，逐步最佳化找出最高電壓組合。</p>
+      </div>
+      <div class="subtopic-card">
+        <p class="subtopic-num">TOPIC · 03</p>
+        <p class="subtopic-name">電路整合</p>
+        <p class="subtopic-body">以前兩個主題的最佳化結果為基礎，設計能點亮<strong>最多 LED</strong> 的麵包板配線方案，將整學期的實驗成果整合應用。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 03 · 角色與貢獻 -->
+  <div class="section-block">
+    <p class="sec-label">// 03 · 角色</p>
+    <h2 class="sec-title">我的貢獻與挑戰</h2>
+    <div class="prose">
+      <p>身為組長，我主要負責<strong>實驗設計、裝置設計與數據分析整合</strong>。過程中遇到不少挑戰——電錶數據常因接觸不良而不穩定，需要花費額外時間重測；麵包板電路設計完畢後，實際接上電池測試也常常不如預期。</p>
+      <p>在數據分析階段，實驗值與理論值之間的落差是最大的困難，甚至需要引入<strong>能斯特方程式</strong>來修正理論電壓，才能讓數據的詮釋更加嚴謹。</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 04 · 實驗成果 -->
+  <div class="section-block">
+    <p class="sec-label">// 04 · 成果</p>
+    <h2 class="sec-title">最佳化結果</h2>
+    <div class="result-grid">
+      <div class="result-card">
+        <p class="result-label">隨行電池</p>
+        <p class="result-value">Mg·Cu</p>
+        <p class="result-desc">最大電壓配置</p>
+        <p class="result-best"><strong>鎂銅電池</strong>搭配<strong>衛生紙鹽橋</strong>，具有最大電壓與電功率。</p>
+      </div>
+      <div class="result-card">
+        <p class="result-label">光敏染料電池</p>
+        <p class="result-value">0.84V</p>
+        <p class="result-desc">最大電壓</p>
+        <p class="result-best">以<strong>藍莓汁</strong>為染料、<strong>綠光</strong>照射、<strong>1M KI₃</strong> 為電解液。</p>
+      </div>
+      <div class="result-card">
+        <p class="result-label">電路整合</p>
+        <p class="result-value">123</p>
+        <p class="result-desc">點亮 LED 數</p>
+        <p class="result-best">並聯 <strong>12 顆鎂銅電池</strong>驅動並聯 LED 燈，成功點亮 <strong>123 顆</strong>。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 05 · 反思 -->
+  <div class="section-block">
+    <p class="sec-label">// 05 · 反思</p>
+    <h2 class="sec-title">學習收穫</h2>
+    <div class="prose">
+      <p>這是我第一次完整執行探究與實作專題。剛開始撰寫實驗結報時有些生疏，不知道如何從「做實驗」過渡到「表達實驗」；隨著過程推進，逐漸掌握了從<strong>實驗設計、數據收集到統整分析</strong>的完整流程。</p>
+      <p>這次專題讓我學到的不只是電化學與電路的學科知識，更重要的是<strong>面對實驗誤差時的應變能力</strong>，以及如何在不完美的數據中找出有意義的規律。</p>
+    </div>
+  </div>
+
+  <!-- 檔案連結 -->
+  <div class="file-cta">
+    <a href="高一上探究與實作_李亞儒.pdf" class="btn-file" target="_blank">
+      <span class="btn-file-icon">↗</span>
+      查看完整報告
+    </a>
+  </div>
+
+</div>
+
+<footer>
+  <p><a href="../index.html#projects">← 返回專題列表</a> &nbsp;·&nbsp; KitsuneUshi · 學習歷程</p>
+</footer>
+
+</body>
+</html>

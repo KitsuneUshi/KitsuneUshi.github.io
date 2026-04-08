@@ -135,39 +135,6 @@
     .block-text p { margin-bottom: 1rem; }
     .block-text strong { color: var(--text); font-weight: 500; }
 
-    /* SCORE CARDS */
-    .score-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-      margin-top: 1rem;
-    }
-    .score-card {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 1.5rem;
-      text-align: center;
-    }
-    .score-label {
-      font-family: var(--mono);
-      font-size: .7rem;
-      color: var(--muted);
-      letter-spacing: .1em;
-      margin-bottom: .5rem;
-    }
-    .score-value {
-      font-family: var(--mono);
-      font-size: 2rem;
-      font-weight: 700;
-      color: var(--accent);
-    }
-    .score-unit {
-      font-size: .8rem;
-      color: var(--muted);
-      margin-top: .25rem;
-    }
-
     /* DIVIDER */
     .divider {
       width: 100%;
@@ -193,39 +160,23 @@
 
 <nav>
   <a href="../index.html" class="nav-logo">&lt;portfolio /&gt;</a>
-  <a href="../index.html" class="nav-back">← 返回</a>
+  <a href="../index.html#notes" class="nav-back">← 返回筆記</a>
 </nav>
 
 <div class="page-hero">
     <div class="page-tag">// 學習紀錄 · 啟蒙</div>
     <h1 class="page-title">LEGO EV3 啟蒙</h1>
-    <p class="page-subtitle">五歲開始的機器人課程，是我走向資工的起點。</p>
+    <p class="page-subtitle">五歲開始的機器人課程，是我走向程式設計的起點。同樣的零件，不同的深度。</p>
 </div>
 
 <div class="content">
 
   <div class="content-block">
-    <p class="block-label">// 成績</p>
-    <div class="score-grid">
-      <div class="score-card">
-        <p class="score-label">觀念題</p>
-        <p class="score-value">4</p>
-        <p class="score-unit">級分</p>
-      </div>
-      <div class="score-card">
-        <p class="score-label">實作題</p>
-        <p class="score-value">3</p>
-        <p class="score-unit">級分</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="content-block">
-    <p class="block-label">// 備考過程</p>
+    <p class="block-label">// 那時候的我</p>
     <div class="block-text">
-      <p>在這裡寫你的備考心得...</p>
+      <p>大約五歲的時候，我開始上 <strong>LEGO MINDSTORM EV3</strong> 的機器人課程。當時用樂高官方的積木式程式設計軟體，把一個個程式區塊堆疊起來，組成完整的控制邏輯。</p>
+      <p>那時候其實<strong>不太懂自己在做什麼</strong>，但只要機器人照著自己設計的程序動起來，就會有一種說不清楚的成就感。那種感覺很特別——不是別人告訴你答案，而是你自己的指令讓一件事情發生了。</p>
+      <p>課程全部上完之後，我還是<strong>一而再地重複報名</strong>，只是為了繼續待在那個環境裡。</p>
     </div>
   </div>
 
@@ -234,16 +185,27 @@
   <div class="content-block">
     <p class="block-label">// 學到什麼</p>
     <div class="block-text">
-      <p>在這裡寫你的收穫...</p>
+      <p>回頭來看，EV3 教會我的不是某個具體的技術，而是一種<strong>思維方式</strong>——把一個目標拆解成一步一步的指令，然後讓機器執行。這其實就是程式設計最核心的概念。</p>
     </div>
   </div>
 
   <div class="divider"></div>
 
   <div class="content-block">
-    <p class="block-label">// 給未來想考 APCS 的人</p>
+    <p class="block-label">// 對現在的影響</p>
     <div class="block-text">
-      <p>在這裡寫建議...</p>
+      <p>從 EV3 到現在寫 C++、做 LLM 專案，表面上跨度很大，但那個最初的感覺從來沒有變過——<strong>用自己的邏輯讓東西運作起來</strong>，就是我持續走在這條路上的原因。</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="content-block">
+    <p class="block-label">// 從啟蒙到應用</p>
+    <div class="block-text">
+      <p>五歲時用 EV3 讓機器人動起來，那時只是覺得好玩；高三時再次拿起 EV3，卻是為了設計一套<strong>物理實驗裝置</strong>——以齒輪組加速馬達、控制撞擊桿打飛細桿，探討旋轉拋體的運動規律。</p>
+      <p>同樣的零件，不同的深度。五歲的我不懂齒輪比，只知道機器人會動了；高三的我用 EV3 的 Large Motor 搭配 <strong>40:8 齒輪組</strong>計算轉速，再把數據帶進轉動力學公式裡驗證理論。</p>
+      <p>這大概就是學習的樣子——起點看起來只是玩，但那個「讓東西動起來」的執念，一直都在。</p>
     </div>
   </div>
 

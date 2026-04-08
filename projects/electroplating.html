@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>探究與實作 — 神奇電鍍・去優養化・微型電路 | KitsuneUshi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:      #080e1a;
+      --bg2:     #0d1625;
+      --panel:   #111d30;
+      --border:  #1e3050;
+      --accent1: #38bdf8;
+      --accent2: #818cf8;
+      --accent3: #34d399;
+      --text:    #e2eaf8;
+      --muted:   #64748b;
+      --mono:    'Space Mono', monospace;
+      --sans:    'Noto Sans TC', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: var(--sans); font-weight: 300; }
+    body::before {
+      content: ''; position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(56,189,248,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(56,189,248,.04) 1px, transparent 1px);
+      background-size: 40px 40px; pointer-events: none; z-index: 0;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 2.5rem;
+      background: rgba(8,14,26,.85); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { font-family: var(--mono); font-size: .85rem; color: var(--accent1); text-decoration: none; }
+    .nav-logo span { color: var(--accent2); }
+    .nav-back { font-family: var(--mono); font-size: .75rem; letter-spacing: .1em; color: var(--muted); text-decoration: none; transition: color .2s; }
+    .nav-back:hover { color: var(--accent1); }
+
+    /* ── PAGE HERO ── */
+    .page-hero {
+      position: relative; z-index: 1;
+      padding: 8rem 2.5rem 4rem;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(56,189,248,.06) 0%, transparent 100%);
+      overflow: hidden;
+    }
+    .page-hero::before {
+      content: ''; position: absolute; top: -120px; right: -80px;
+      width: 500px; height: 500px; border-radius: 50%;
+      background: rgba(56,189,248,.07); filter: blur(100px); pointer-events: none;
+    }
+    .hero-inner { position: relative; z-index: 1; max-width: 860px; }
+
+    .page-tag {
+      font-family: var(--mono); font-size: .68rem; letter-spacing: .18em;
+      text-transform: uppercase; color: var(--accent1);
+      border: 1px solid var(--accent1); padding: .22rem .7rem;
+      border-radius: 2px; display: inline-block; margin-bottom: 1.2rem;
+    }
+    .page-title {
+      font-family: var(--mono); font-size: clamp(1.6rem, 4vw, 2.8rem);
+      font-weight: 700; line-height: 1.2; margin-bottom: 1rem;
+      background: linear-gradient(90deg, var(--accent1), var(--accent2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .page-subtitle { font-size: .92rem; color: var(--muted); max-width: 580px; line-height: 1.85; margin-bottom: 1.5rem; }
+    .hero-meta { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
+    .hero-meta-item { font-family: var(--mono); font-size: .68rem; color: var(--muted); letter-spacing: .08em; }
+    .hero-meta-item span { color: var(--accent1); }
+    .chips { display: flex; gap: .4rem; flex-wrap: wrap; margin-top: 1.25rem; }
+    .chip {
+      font-family: var(--mono); font-size: .62rem; padding: .2rem .55rem;
+      border-radius: 2px; background: rgba(56,189,248,.1); color: var(--accent1);
+      border: 1px solid rgba(56,189,248,.25);
+    }
+    .role-badge { font-family: var(--mono); font-size: .68rem; color: var(--accent2); letter-spacing: .05em; margin-top: 1rem; }
+    .role-badge::before { content: '// '; opacity: .5; }
+
+    /* ── CONTENT ── */
+    .content { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; padding: 4rem 2.5rem 6rem; }
+    .section-block { margin-bottom: 3.5rem; }
+    .sec-label { font-family: var(--mono); font-size: .68rem; letter-spacing: .2em; text-transform: uppercase; color: var(--accent2); margin-bottom: .6rem; }
+    .sec-title { font-family: var(--mono); font-size: 1.05rem; font-weight: 700; margin-bottom: 1.25rem; padding-bottom: .75rem; border-bottom: 1px solid var(--border); }
+    .prose { font-size: .93rem; color: var(--muted); line-height: 1.95; }
+    .prose p { margin-bottom: 1.1rem; }
+    .prose p:last-child { margin-bottom: 0; }
+    .prose strong { color: var(--text); font-weight: 500; }
+
+    /* 三主題卡片 */
+    .subtopic-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; margin-top: .25rem; }
+    @media (max-width: 700px) { .subtopic-grid { grid-template-columns: 1fr; } }
+    .subtopic-card {
+      background: var(--panel); border: 1px solid var(--border); border-radius: 8px;
+      padding: 1.5rem; position: relative; overflow: hidden; transition: border-color .25s, transform .25s;
+    }
+    .subtopic-card:hover { border-color: var(--accent1); transform: translateY(-3px); }
+    .subtopic-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; }
+    .subtopic-card:nth-child(1)::before { background: linear-gradient(90deg, var(--accent1), var(--accent2)); }
+    .subtopic-card:nth-child(2)::before { background: linear-gradient(90deg, var(--accent2), var(--accent3)); }
+    .subtopic-card:nth-child(3)::before { background: linear-gradient(90deg, var(--accent3), var(--accent1)); }
+    .subtopic-num { font-family: var(--mono); font-size: .65rem; color: var(--muted); letter-spacing: .15em; margin-bottom: .5rem; }
+    .subtopic-name { font-family: var(--mono); font-size: .88rem; font-weight: 700; color: var(--text); margin-bottom: .85rem; }
+    .subtopic-body { font-size: .82rem; color: var(--muted); line-height: 1.8; }
+    .subtopic-body strong { color: var(--text); font-weight: 500; }
+
+    /* 成果數字卡片 */
+    .result-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; margin-top: .25rem; }
+    @media (max-width: 700px) { .result-grid { grid-template-columns: 1fr; } }
+    .result-card { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem 1.25rem; text-align: center; }
+    .result-label { font-family: var(--mono); font-size: .65rem; color: var(--muted); letter-spacing: .1em; text-transform: uppercase; margin-bottom: .6rem; }
+    .result-value { font-family: var(--mono); font-size: 2rem; font-weight: 700; line-height: 1; margin-bottom: .4rem; }
+    .result-card:nth-child(1) .result-value { color: var(--accent1); }
+    .result-card:nth-child(2) .result-value { color: var(--accent2); }
+    .result-card:nth-child(3) .result-value { color: var(--accent3); }
+    .result-desc { font-size: .78rem; color: var(--muted); line-height: 1.6; }
+    .result-best { font-size: .75rem; color: var(--muted); margin-top: .7rem; line-height: 1.6; border-top: 1px solid var(--border); padding-top: .7rem; text-align: left; }
+    .result-best strong { color: var(--text); font-weight: 500; }
+
+    .divider { width: 100%; height: 1px; background: var(--border); margin: .5rem 0 3.5rem; }
+
+    /* FILE CTA */
+    .file-cta { margin-top: 1rem; padding-top: 2.5rem; border-top: 1px solid var(--border); display: flex; align-items: center; gap: 1rem; }
+    .btn-file {
+      display: inline-flex; align-items: center; gap: .6rem;
+      font-family: var(--mono); font-size: .78rem; letter-spacing: .1em;
+      text-transform: uppercase; text-decoration: none;
+      color: var(--bg); background: var(--accent1);
+      padding: .65rem 1.5rem; border-radius: 3px; font-weight: 700;
+      transition: background .2s, transform .2s;
+    }
+    .btn-file:hover { background: #7dd3fc; transform: translateY(-2px); }
+    .btn-file-icon { font-size: 1rem; line-height: 1; }
+
+    footer { border-top: 1px solid var(--border); padding: 1.5rem 2.5rem; text-align: center; font-family: var(--mono); font-size: .7rem; color: var(--muted); position: relative; z-index: 1; }
+    footer a { color: var(--muted); text-decoration: none; transition: color .2s; }
+    footer a:hover { color: var(--accent1); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="../index.html" class="nav-logo">&lt;<span>portfolio</span> /&gt;</a>
+  <a href="../index.html#projects" class="nav-back">← 返回專題</a>
+</nav>
+
+<div class="page-hero">
+  <div class="hero-inner">
+    <div class="page-tag">// projects · 探究與實作 · 高一下</div>
+    <h1 class="page-title">探究與實作<br>神奇電鍍・去優養化・微型電路</h1>
+    <p class="page-subtitle">以自製鎂銅隨行電池為電源，同時驅動電鍍裝置（硬幣鍍鋅，光澤度達 135GU）與電解去優養化裝置，探討電化學技術在材料工程與環境保護上的應用。</p>
+    <div class="hero-meta">
+      <span class="hero-meta-item">年份 <span>2024</span></span>
+      <span class="hero-meta-item">類型 <span>探究與實作專題</span></span>
+    </div>
+    <div class="chips">
+      <span class="chip">電鍍</span>
+      <span class="chip">環境工程</span>
+      <span class="chip">電解</span>
+      <span class="chip">電路設計</span>
+    </div>
+    <p class="role-badge">組長・計畫實驗・作圖分析</p>
+  </div>
+</div>
+
+<div class="content">
+
+  <div class="section-block">
+    <p class="sec-label">// 01 · 背景</p>
+    <h2 class="sec-title">專題緣起</h2>
+    <div class="prose">
+      <p>選擇<strong>電鍍</strong>作為主題，是因為它與生活極為貼近——小至模型零件的表面處理，大至工業機具的防腐塗層，電鍍技術無所不在。我們希望找出一種<strong>低耗材又能維持精緻度</strong>的電鍍方法，探討其最佳化條件。</p>
+      <p><strong>去優養化</strong>主題則呼應近年日益嚴峻的環保議題。含有機廢料的廢水持續排入河川，造成藻類過度繁殖、水體生態失衡。我們希望透過<strong>小型電解裝置</strong>，探討能否有效降低水體中的營養鹽濃度，為這個問題找到可能的解方。</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section-block">
+    <p class="sec-label">// 02 · 架構</p>
+    <h2 class="sec-title">實驗設計</h2>
+    <div class="subtopic-grid">
+      <div class="subtopic-card">
+        <p class="subtopic-num">TOPIC · 01</p>
+        <p class="subtopic-name">硬幣電鍍</p>
+        <p class="subtopic-body">以鋅為鍍層材料，操縱變因包含<strong>鋅粉添加量、氫氧化鈉濃度與電壓大小</strong>，以光澤度（GU）為指標評估電鍍品質，找出最佳化電鍍條件。最佳配置為鋅粉 5g、8M 氫氧化鈉、電壓 0.2V。</p>
+      </div>
+      <div class="subtopic-card">
+        <p class="subtopic-num">TOPIC · 02</p>
+        <p class="subtopic-name">去優養化</p>
+        <p class="subtopic-body">以自製電解裝置電解氯化鈉產生氯氣，藉此分解水中藻類色素。操縱變因包含<strong>電解時間、電壓與電解液種類</strong>，並以吸收光譜圖與溶氧量雙指標評估去優養化效果。</p>
+      </div>
+      <div class="subtopic-card">
+        <p class="subtopic-num">TOPIC · 03</p>
+        <p class="subtopic-name">電路整合</p>
+        <p class="subtopic-body">將前兩個主題的最佳化電池配置整合，以<strong>自製鎂銅電池組</strong>驅動電鍍裝置與去優養化裝置，驗證實際應用的可行性。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section-block">
+    <p class="sec-label">// 03 · 角色</p>
+    <h2 class="sec-title">我的貢獻與挑戰</h2>
+    <div class="prose">
+      <p>身為組長，我主要負責<strong>實驗設計與數據統整</strong>，過程中遭遇的挑戰橫跨三個主題。</p>
+      <p>電鍍實驗需要在<strong>全暗環境</strong>下測量光澤度，且測試硬幣顏色時容易因光照角度不同而產生色差，需反覆篩選最具代表性的數值。去優養化實驗則需分析複雜的<strong>吸收光譜圖</strong>，辨識特定波段的峰值；定性實驗部分也常因採集到的藻類不足，導致圖像效果不夠顯著。最後的整合實驗，由於裝置為<strong>非歐姆電阻</strong>，需先以直流電源供應器預測電阻，加上自製電池組穩定度不足，都需要額外的時間處理與校正。</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section-block">
+    <p class="sec-label">// 04 · 成果</p>
+    <h2 class="sec-title">最佳化結果</h2>
+    <div class="result-grid">
+      <div class="result-card">
+        <p class="result-label">硬幣電鍍</p>
+        <p class="result-value">200</p>
+        <p class="result-desc">最佳光澤度 GU（加熱成黃銅合金後）</p>
+        <p class="result-best"><strong>最佳條件：</strong>鋅粉 5g、8M 氫氧化鈉、電壓 0.2V</p>
+      </div>
+      <div class="result-card">
+        <p class="result-label">去優養化</p>
+        <p class="result-value">10.1</p>
+        <p class="result-desc">溶氧量差值（mg/L）</p>
+        <p class="result-best"><strong>最佳條件：</strong>電解 5 分鐘、電壓 4V、3.0M 氯化鈉電解液</p>
+      </div>
+      <div class="result-card">
+        <p class="result-label">電路整合</p>
+        <div style="display:flex;justify-content:center;gap:2rem;margin:.5rem 0 .25rem;">
+          <div>
+            <p style="font-family:var(--mono);font-size:.58rem;color:var(--muted);letter-spacing:.08em;margin-bottom:.3rem;">電鍍</p>
+            <p style="font-family:var(--mono);font-size:1.6rem;font-weight:700;line-height:1;color:var(--accent3);">1.20<span style="font-size:.85rem;">V</span></p>
+          </div>
+          <div style="width:1px;background:var(--border);"></div>
+          <div>
+            <p style="font-family:var(--mono);font-size:.58rem;color:var(--muted);letter-spacing:.08em;margin-bottom:.3rem;">去優養化</p>
+            <p style="font-family:var(--mono);font-size:1.6rem;font-weight:700;line-height:1;color:var(--accent3);">3.89<span style="font-size:.85rem;">V</span></p>
+          </div>
+        </div>
+        <p class="result-desc">自製鎂銅電池組整合電壓</p>
+        <p class="result-best"><strong>電鍍：</strong>並聯 3 顆鎂銅電池（54mA、1.20V）<br><strong>去優養化：</strong>並聯 2 排各 3 顆（36mA、3.89V）</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section-block">
+    <p class="sec-label">// 05 · 反思</p>
+    <h2 class="sec-title">學習收穫</h2>
+    <div class="prose">
+      <p>這是我首次同時進行<strong>定性與定量實驗</strong>的專題。定性實驗讓我學會以<strong>圖像資料</strong>而非單純數字來詮釋科學結果，體認到科學分析的形式不只一種。</p>
+      <p>去優養化的定量實驗中，學著閱讀<strong>吸收光譜圖</strong>並篩選特定波段的峰值，對於複雜數據的解讀與分析能力有明顯的提升。這次專題讓我理解，面對不同類型的數據，需要靈活切換分析的視角與方法。</p>
+    </div>
+  </div>
+
+  <div class="file-cta">
+    <a href="高一下探究與實作_李亞儒.pdf" class="btn-file" target="_blank">
+      <span class="btn-file-icon">↗</span>
+      查看完整報告
+    </a>
+  </div>
+
+</div>
+
+<footer>
+  <p><a href="../index.html#projects">← 返回專題列表</a> &nbsp;·&nbsp; KitsuneUshi · 學習歷程</p>
+</footer>
+
+</body>
+</html>
