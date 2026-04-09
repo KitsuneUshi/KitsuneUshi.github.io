@@ -153,6 +153,28 @@
       border-radius: 6px;
       padding: 1.5rem;
       text-align: center;
+      display: block;
+      color: inherit;
+      text-decoration: none;
+      cursor: pointer;
+      transition: border-color .2s, background .2s, transform .15s;
+    }
+    .score-card:hover {
+      border-color: var(--accent);
+      background: rgba(56,189,248,.08);
+      transform: translateY(-2px);
+    }
+    .score-card .cert-hint {
+      font-family: var(--mono);
+      font-size: .65rem;
+      color: var(--accent);
+      letter-spacing: .08em;
+      margin-top: .6rem;
+      opacity: 0;
+      transition: opacity .2s;
+    }
+    .score-card:hover .cert-hint {
+      opacity: 1;
     }
     .score-label {
       font-family: var(--mono);
@@ -212,16 +234,18 @@
   <div class="content-block">
     <p class="block-label">// 成績</p>
     <div class="score-grid">
-      <div class="score-card">
+      <a class="score-card" href="../assets/APCS_43_2025-01-20.pdf" target="_blank" rel="noopener">
         <p class="score-label">觀念題</p>
         <p class="score-value">4</p>
         <p class="score-unit">級分</p>
-      </div>
-      <div class="score-card">
+        <p class="cert-hint">↗ 查看證書</p>
+      </a>
+      <a class="score-card" href="../assets/APCS_43_2025-01-20.pdf" target="_blank" rel="noopener">
         <p class="score-label">實作題</p>
         <p class="score-value">3</p>
         <p class="score-unit">級分</p>
-      </div>
+        <p class="cert-hint">↗ 查看證書</p>
+      </a>
     </div>
   </div>
 
@@ -230,7 +254,7 @@
   <div class="content-block">
     <p class="block-label">// 備考過程</p>
     <div class="block-text">
-      <p>升上<strong>高一的暑假</strong>，我開始系統性地準備 APCS。主要透過寰宇教育中心 Let's Code 的課程（後來老師另創<strong>資電資訊教育</strong>，我也持續跟著上課）打好基礎，並在 <strong>ZeroJudge</strong> 上自行刷題練習。</p>
+      <p>升上<strong>高一的暑假</strong>，我開始系統性地準備 APCS。主要透過寰宇教育中心 Let's Code 的課程（後來主導老師另創<strong>資電資訊教育</strong>，我也持續跟著上課）打好基礎，並在 <strong>ZeroJudge</strong> 上自行刷題練習。</p>
       <p>遇到不會的題目時，除了直接問老師，也會去 <strong>HackMD、CSDN</strong> 找解題思路，或搜尋開放式課程。查英文資料的過程中，意外也訓練了英文聽力——尤其是<strong>印度口音</strong>。</p>
       <p>備考最困難的地方是：很多題目很難直接想到解法，需要大量練題才能培養出對<strong>演算法與資料結構</strong>的直覺與靈活運用。</p>
     </div>
