@@ -181,6 +181,19 @@
       margin: 2rem 0;
     }
 
+    /* FILE CTA */
+    .file-cta { margin-top: 1rem; padding-top: 2.5rem; border-top: 1px solid var(--border); display: flex; align-items: center; gap: 1rem; }
+    .btn-file {
+      display: inline-flex; align-items: center; gap: .6rem;
+      font-family: var(--mono); font-size: .78rem; letter-spacing: .1em;
+      text-transform: uppercase; text-decoration: none;
+      color: var(--bg); background: var(--accent);
+      padding: .65rem 1.5rem; border-radius: 3px; font-weight: 700;
+      transition: background .2s, transform .2s;
+    }
+    .btn-file:hover { background: #5eead4; transform: translateY(-2px); }
+    .btn-file-icon { font-size: 1rem; line-height: 1; }
+
     /* FOOTER */
     footer {
       border-top: 1px solid var(--border);
@@ -225,6 +238,15 @@
           <p>預計技術棧：<strong>Python</strong>、<strong>LLM API</strong>、<strong>長期記憶架構</strong>、<strong>Live2D SDK</strong>、<strong>TTS</strong></p>
         </div>
     </div>
+
+
+  <div class="file-cta">
+    <a href="../projects/114學年度多元表現_LLM專案_李亞儒.pdf" class="btn-file" target="_blank">
+      <span class="btn-file-icon">↗</span>
+      查看完整報告
+    </a>
+  </div>
+
 </div>
 
 <footer>
